@@ -1,7 +1,7 @@
-package LogisTEC.src.algorithms;
+package algorithms;
 
-import LogisTEC.src.graph.Graph;
-import LogisTEC.src.ds.MinHeap;
+import graph.Graph;
+import ds.MinHeap;
 
 /**
  * Algoritmo de Prim para construir el Arbol de Expansion Minima (MST) de un
