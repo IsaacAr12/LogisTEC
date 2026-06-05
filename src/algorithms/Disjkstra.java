@@ -1,7 +1,7 @@
-package cr.ac.tec.ce1103.logistec.algorithms;
+package LogisTEC.src.algorithms;
 
-import cr.ac.tec.ce1103.logistec.graph.Graph;
-import cr.ac.tec.ce1103.logistec.structures.MinHeap;
+import LogisTEC.src.graph.Graph;
+import LogisTEC.src.ds.MinHeap;
 
 /**
  * Algoritmo de Dijkstra para caminos minimos desde un vertice origen en un

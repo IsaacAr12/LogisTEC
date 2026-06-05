@@ -1,6 +1,5 @@
-package cr.ac.tec.ce1103.logistec.algorithms;
-
-import cr.ac.tec.ce1103.logistec.graph.Graph;
+package LogisTEC.src.algorithms;
+import LogisTEC.src.graph.Graph;
 
 /**
  * Algoritmo de Floyd-Warshall para calcular la distancia minima entre
