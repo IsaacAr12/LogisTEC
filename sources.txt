@@ -20,3 +20,11 @@ C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\io\LogisticsConfig.java
 C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\model\Package.java
 C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\model\ProblemCase.java
 C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\model\Truck.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\AssignmentResult.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\MSTBasedRouter.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\NearestNeighborRouter.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\PackageAssigner.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\RouteComparison.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\RouteResult.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\planner\TruckAssignment.java
+C:\Users\Jeremias\Documents\GitHub\LogisTEC\src\ui\LogisTecFrame.java

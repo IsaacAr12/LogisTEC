@@ -26,6 +26,8 @@ import planner.MSTBasedRouter;
 import planner.RouteResult;
 import planner.RouteComparison;
 
+import ui.LogisTecFrame;
+
 import java.io.IOException;
 
 /**
@@ -41,6 +43,7 @@ import java.io.IOException;
  * - Ruteo con Nearest Neighbor.
  * - Ruteo con MST-based.
  * - Comparación de heurísticas.
+ * - Visualización gráfica básica con Swing.
  */
 public class Main {
 
@@ -193,6 +196,9 @@ public class Main {
 
         TruckAssignment[] assignments = assignmentResult.getAssignments();
 
+        RouteResult[] bestRoutes = new RouteResult[assignments.length];
+        String[] truckIdsForRoutes = new String[assignments.length];
+
         for (int i = 0; i < assignments.length; i++) {
             TruckAssignment assignment = assignments[i];
 
@@ -209,6 +215,9 @@ public class Main {
             RouteResult mstRoute = mstRouter.buildRoute(g, fw, depot.getId(), destinationIds);
 
             RouteComparison comparison = new RouteComparison(nnRoute, mstRoute);
+
+            bestRoutes[i] = comparison.getBestRoute();
+            truckIdsForRoutes[i] = assignment.getTruck().getId();
 
             System.out.println("   Ruta Nearest Neighbor:");
             printRoute(g, nnRoute);
@@ -227,6 +236,9 @@ public class Main {
             System.out.println("   Ahorro MST sobre NN: "
                     + String.format("%.2f", comparison.getImprovementPercentage()) + "%");
         }
+
+        // ---- 8. Interfaz gráfica básica ----
+        LogisTecFrame.showWindow(g, bestRoutes, truckIdsForRoutes);
     }
 
     /**
