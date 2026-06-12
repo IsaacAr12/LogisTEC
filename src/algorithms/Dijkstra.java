@@ -1,6 +1,8 @@
 package algorithms;
 
 import graph.Graph;
+import graph.Vertex;
+import graph.Edge;
 import ds.MinHeap;
 
 /**
@@ -20,19 +22,14 @@ import ds.MinHeap;
  * </ul>
  *
  * <h2>Restricciones del proyecto</h2>
- * <p>No se usa ninguna colección de {@code java.util}. La cola de prioridad es
- * el {@link MinHeap}.</p>
- *
+ * <p>No se usa ninguna coleccion de {@code java.util}. La cola de prioridad es
+ * el {@link MinHeap} del equipo y la lista de adyacencia es la del {@link Graph}.</p>
  */
 public class Dijkstra {
 
-
-    // Constante
     /** Valor centinela que indica distancia infinita (inalcanzable). */
     public static final int INF = Integer.MAX_VALUE / 2;
 
-
-    // Resultado de la ejecución
     /** Arreglo de distancias minimas desde el origen ({@code dist[v]}). */
     private final int[] dist;
 
@@ -42,16 +39,12 @@ public class Dijkstra {
      */
     private final int[] prev;
 
-    /** Número de vertices del grafo. */
+    /** Numero de vertices del grafo. */
     private final int n;
-
-
-    // Constructor — ejecuta el algoritmo
-
 
     /**
      * Crea un objeto Dijkstra y ejecuta el algoritmo desde {@code source}.
-     * Despues de la construcción, use {@link #distTo(int)}, {@link #pathTo(int)}
+     * Despues de la construccion, use {@link #distTo(int)}, {@link #pathTo(int)}
      * y {@link #hasPathTo(int)} para consultar resultados.
      *
      * @param g      grafo no dirigido ponderado (implementado por P2)
@@ -65,30 +58,28 @@ public class Dijkstra {
 
         dist = new int[n];
         prev = new int[n];
-
-        // Inicializacion
         for (int i = 0; i < n; i++) {
             dist[i] = INF;
             prev[i] = -1;
         }
         dist[source] = 0;
 
-        // Cola de prioridad minima (implementada por P1)
+        // Mapa indice -> Vertex (O(V), evita busquedas O(V) dentro del bucle).
+        Vertex[] byIndex = new Vertex[n];
+        for (Vertex vv : g.getVertices()) byIndex[vv.getIndex()] = vv;
+
+        // Cola de prioridad minima (implementada por P1).
         MinHeap pq = new MinHeap(n);
         pq.insertOrDecrease(source, 0);
 
-        // Algoritmo principal
         while (!pq.isEmpty()) {
             int u = pq.extractMin();
+            if (dist[u] == INF) continue;            // u inalcanzable: no relaja
 
-            // Relajar aristas del vertice u
-            for (Graph.AdjNode nd = g.adj(u); nd != null; nd = nd.next) {
-                int v = nd.to;
-                int w = nd.weight;
-
-                // Evitar overflow con distancias INF
-                if (dist[u] == INF) continue;
-
+            Vertex vu = byIndex[u];
+            for (Edge e : g.getNeighbors(vu)) {       // lista de adyacencia real
+                int v = e.getOther(vu).getIndex();
+                int w = e.getDistance();
                 int newDist = dist[u] + w;
                 if (newDist < dist[v]) {
                     dist[v] = newDist;
@@ -99,36 +90,23 @@ public class Dijkstra {
         }
     }
 
-
-    // Consultas públicas
-
     /**
      * Distancia minima desde el origen hasta {@code v}.
-     *
      * @param v indice del vertice destino
      * @return distancia en metros, o {@link #INF} si no es alcanzable
      */
-    public int distTo(int v) {
-        checkIndex(v);
-        return dist[v];
-    }
+    public int distTo(int v) { checkIndex(v); return dist[v]; }
 
     /**
      * Indica si existe camino desde el origen hasta {@code v}.
-     *
      * @param v indice del vertice destino
      * @return {@code true} si es alcanzable
      */
-    public boolean hasPathTo(int v) {
-        checkIndex(v);
-        return dist[v] < INF;
-    }
+    public boolean hasPathTo(int v) { checkIndex(v); return dist[v] < INF; }
 
     /**
      * Reconstruye el camino minimo desde el origen hasta {@code v} como un
-     * arreglo de indices de vertices (origen incluido, destino incluido).
-     *
-     * <p>Ejemplo: si el camino es A=>C=>D, retorna {@code [idxA, idxC, idxD]}.</p>
+     * arreglo de indices de vertices (origen y destino incluidos).
      *
      * @param v indice del vertice destino
      * @return arreglo de indices del camino, o {@code null} si no es alcanzable
@@ -136,32 +114,20 @@ public class Dijkstra {
     public int[] pathTo(int v) {
         checkIndex(v);
         if (!hasPathTo(v)) return null;
-
-        // Contar longitud del camino (desde v hacia atras)
         int len = 0;
         for (int cur = v; cur != -1; cur = prev[cur]) len++;
-
-        // Llenar el arreglo en orden inverso
         int[] path = new int[len];
         int idx = len - 1;
-        for (int cur = v; cur != -1; cur = prev[cur]) {
-            path[idx--] = cur;
-        }
+        for (int cur = v; cur != -1; cur = prev[cur]) path[idx--] = cur;
         return path;
     }
 
     /**
      * Retorna una copia del arreglo completo de distancias minimas desde el origen.
-     * Útil para construir la fila correspondiente en la matriz de Floyd-Warshall.
-     *
+     * Util para construir la fila correspondiente en la matriz de Floyd-Warshall.
      * @return arreglo {@code dist[]} (copia defensiva)
      */
-    public int[] allDistances() {
-        return dist.clone();
-    }
-
-
-    // Utilidades privadas
+    public int[] allDistances() { return dist.clone(); }
 
     private void checkIndex(int v) {
         if (v < 0 || v >= n)
