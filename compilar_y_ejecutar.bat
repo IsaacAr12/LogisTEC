@@ -1,8 +1,8 @@
 @echo off
-title LogisTEC - Compilar
+title LogisTEC - Compilar y Ejecutar
 
 echo ==========================================
-echo        COMPILANDO PROYECTO LOGISTEC
+echo     COMPILAR Y EJECUTAR LOGISTEC
 echo ==========================================
 echo.
 
@@ -26,7 +26,15 @@ if not exist lib\gson-2.10.1.jar (
     exit /b 1
 )
 
-REM Borra compilacion anterior
+REM Verifica que exista el JSON
+if not exist data\caso_prueba.json (
+    echo ERROR: No se encontro data\caso_prueba.json
+    echo.
+    pause
+    exit /b 1
+)
+
+REM Limpia compilacion anterior
 if exist out (
     rmdir /s /q out
 )
@@ -36,7 +44,7 @@ mkdir out
 REM Crea lista de archivos Java
 dir /s /b src\*.java > sources.txt
 
-echo Compilando archivos Java...
+echo Compilando...
 echo.
 
 javac -encoding UTF-8 -cp "lib\gson-2.10.1.jar" -d out @sources.txt
@@ -52,8 +60,16 @@ if %errorlevel% neq 0 (
 )
 
 echo.
+echo Compilacion correcta.
+echo.
+echo Ejecutando...
+echo.
+
+java -cp "out;lib\gson-2.10.1.jar" Main data\caso_prueba.json
+
+echo.
 echo ==========================================
-echo      COMPILACION COMPLETADA CORRECTAMENTE
+echo        PROGRAMA FINALIZADO
 echo ==========================================
 echo.
 
