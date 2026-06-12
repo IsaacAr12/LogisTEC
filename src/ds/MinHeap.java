@@ -118,6 +118,18 @@ public class MinHeap {
     }
 
     /**
+    * Alias de delMin().
+    *
+    * Algunos algoritmos del proyecto llaman a esta operación como extractMin().
+    * Para evitar cambiar todos esos archivos, dejamos este método como puente.
+    *
+    * @return el índice con menor prioridad.
+    */
+    public int extractMin() {
+        return delMin();
+    }
+
+    /**
      * @param i índice consultado.
      * @return la prioridad actual del índice. O(1).
      * @throws IllegalArgumentException si el índice no está en el heap.
